@@ -1,63 +1,172 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE, SOCIAL_LINKS } from '../consts';
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <BaseHead title={`Sobre · ${SITE_TITLE}`} description="Software Developer | Back-End | Java" />
+  </head>
+  <body>
+    <Header />
+    <main>
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+      <div class="tag">disponível para oportunidades</div>
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+      <h1>Vanessa Amancio</h1>
+      <p class="headline">Software Developer · Back-End · Java</p>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+      <hr />
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+      <h2>sobre mim</h2>
+
+      <p>💻 Desenvolvedora Back-end | Estudante | Freelancer</p>
+
+<p>Sou desenvolvedora em transição para o back-end, apaixonada por construir soluções robustas, escaláveis e bem estruturadas. Minha trajetória começou no front-end, o que me proporcionou uma visão completa do desenvolvimento web e uma boa noção de experiência do usuário, mas foi no back-end que encontrei meu verdadeiro interesse, lidando com regras de negócio, integrações e lógica de sistemas.</p>
+
+<p>Atualmente sou estudante, sempre buscando evoluir tecnicamente e aprender novas tecnologias, boas práticas e arquiteturas modernas. Estou em constante processo de migração e aprofundamento no desenvolvimento back-end, focando em criar sistemas eficientes e bem organizados.</p>
+
+<p>Tenho experiência trabalhando como freelancer, o que me ajudou a desenvolver não só habilidades técnicas, mas também responsabilidade, comunicação com clientes e autonomia na entrega de projetos.</p>
+
+<p>Gosto de desafios e tenho muita curiosidade por tudo que envolve tecnologia. No futuro, pretendo explorar diferentes áreas, aprofundar meus conhecimentos em back-end, arquitetura de software e participar de projetos que realmente gerem impacto.</p>
+
+<p>Tenho inglês nível A2 e português nativo. Sou curiosa, comprometida com o aprendizado contínuo e sempre aberta a aprender, colaborar e construir coisas novas.</p>
+
+      <hr />
+
+      <h2>comunidade & open source</h2>
+
+      <div class="community-card">
+        <div class="card-dot"></div>
+        <div>
+          <div class="card-title">SouJava</div>
+          <p class="card-desc">Membro ativa da maior comunidade Java do Brasil, participando de eventos, discussões e iniciativas que fortalecem o ecossistema Java no país.</p>
+        </div>
+      </div>
+
+      <div class="community-card">
+        <div class="card-dot"></div>
+        <div>
+          <div class="card-title">Quarkus — Contribuições Open Source</div>
+          <p class="card-desc">Contribuo ativamente para o Quarkus, framework nativo para cloud da Red Hat, ajudando a construir o futuro do Java moderno e de alta performance.</p>
+        </div>
+      </div>
+
+      <hr />
+
+      <h2>vamos conversar?</h2>
+
+      <p class="contact-intro">Se você gosta de falar sobre desenvolvimento back-end, Java, open source ou arquitetura de software, será um prazer trocar uma ideia.</p>
+
+      <div class="contact-list">
+        <div class="contact-item">
+          <span class="contact-label">Email</span>
+          <a href={SOCIAL_LINKS.email}>vanessasousapro@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">GitHub</span>
+          <a href={SOCIAL_LINKS.github} target="_blank">@vanessasousapro</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">LinkedIn</span>
+          <a href={SOCIAL_LINKS.linkedin} target="_blank">Vanessa Sousa Silva</a>
+        </div>
+      </div>
+
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--accent2);
+    background: var(--accent-glow);
+    border: 1px solid rgba(124, 111, 240, 0.25);
+    border-radius: 4px;
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.2rem;
+  }
+
+  .headline {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    letter-spacing: 0.02em;
+  }
+
+  .community-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+
+  .community-card:hover {
+    border-color: var(--border2);
+  }
+
+  .card-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .contact-intro {
+    margin-bottom: 1.25rem;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .contact-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    min-width: 64px;
+  }
+
+  .contact-item a {
+    font-size: 13px;
+  }
+</style>
