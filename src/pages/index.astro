@@ -27,7 +27,7 @@ const latestPost = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDat
 
       <section class="latest-post">
         <h2>post recente</h2>
-        <a href={`/blog/${latestPost.slug}`} class="post-card">
+        <a href={`/blog/${latestPost.id}`} class="post-card"></a>
           {latestPost.data.heroImage && (
             <img
               class="post-cover"
