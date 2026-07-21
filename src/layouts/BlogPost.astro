@@ -4,9 +4,20 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & {
+  backHref: string;
+  backLabel: string;
+};
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  backHref,
+  backLabel,
+} = Astro.props;
 
 const formattedDate = new Date(pubDate).toLocaleDateString('pt-BR', {
   day: '2-digit',
@@ -31,7 +42,7 @@ const discordShare = `https://discord.com/channels/@me`;
     <main>
       <article>
 
-        <a href="/blog" class="back-link">← voltar aos posts</a>
+        <a href={backHref} class="back-link">{backLabel}</a>
 
         <div class="post-header">
           <p class="post-date">{formattedDate}</p>

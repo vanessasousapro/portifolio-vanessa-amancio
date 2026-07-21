@@ -60,12 +60,14 @@ portfolio-vanessa-amancio/
 │   ├── assets/             # Logo e fontes
 │   ├── components/         # Header, Footer, BaseHead
 │   ├── content/
-│   │   └── blog/           # Posts em Markdown (.md)
-│   ├── layouts/            # Layout base dos posts
+│   │   ├── posts/          # Posts estilo LinkedIn (eventos, comunidade) em Markdown (.md)
+│   │   └── blog/           # Artigos sobre métodos de estudo em Markdown (.md)
+│   ├── layouts/            # Layout base dos posts/artigos
 │   ├── pages/              # Páginas do site
 │   │   ├── index.astro     # Página inicial
 │   │   ├── about.astro     # Sobre mim
-│   │   └── blog/           # Listagem e posts
+│   │   ├── posts/          # Listagem e posts estilo LinkedIn
+│   │   └── blog/           # Listagem e artigos de métodos de estudo
 │   └── styles/
 │       └── global.css      # Estilos globais
 ├── astro.config.mjs
@@ -74,9 +76,9 @@ portfolio-vanessa-amancio/
 
 ---
 
-## 📝 Como adicionar um novo post
+## 📝 Como adicionar um novo post ou artigo
 
-1. Crie um arquivo `.md` em `src/content/blog/`
+1. Crie um arquivo `.md` em `src/content/posts/` (posts estilo LinkedIn) ou `src/content/blog/` (artigos de métodos de estudo)
 2. Adicione o frontmatter com as informações do post:
 
 ```markdown
