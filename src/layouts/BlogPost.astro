@@ -27,6 +27,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('pt-BR', {
 
 const pageUrl = Astro.url.href;
 const linkedinShare = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
+const linkedinDeepLink = `linkedin://shareArticle?mini=true&url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(description)}`;
 const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pageUrl)}`;
 ---
 
@@ -104,7 +105,7 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
   </body>
 </html>
 
-<script define:vars={{ pageUrl }}>
+<script define:vars={{ pageUrl, linkedinDeepLink }}>
   function showShareToast(message) {
     const toast = document.createElement('div');
     toast.className = 'share-toast';
@@ -148,16 +149,26 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
       });
   });
 
-  // em nova aba (target="_blank"), o celular costuma manter tudo no navegador
-  // em vez de entregar pro app do LinkedIn — navegar na mesma aba é o que faz
-  // o iOS/Android acionarem o universal link e abrirem o app instalado
+  // a URL de share-offsite do LinkedIn não é um universal link (diferente do
+  // wa.me do WhatsApp), então o navegador mobile não entrega pro app sozinho.
+  // tenta o esquema legado linkedin://, e se o app não abrir em ~1,5s
+  // (esquema não suportado ou app não instalado), cai pro link normal
   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   const linkedinBtn = document.getElementById('linkedin-share-btn');
 
   if (isMobile && linkedinBtn) {
     linkedinBtn.addEventListener('click', (event) => {
       event.preventDefault();
-      window.location.href = linkedinBtn.href;
+      const webFallbackUrl = linkedinBtn.href;
+      const clickedAt = Date.now();
+
+      window.location.href = linkedinDeepLink;
+
+      setTimeout(() => {
+        if (!document.hidden && Date.now() - clickedAt < 2000) {
+          window.location.href = webFallbackUrl;
+        }
+      }, 1500);
     });
   }
 </script>
