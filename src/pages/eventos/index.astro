@@ -46,11 +46,14 @@ today.setHours(0, 0, 0, 0);
                   <span class={`status-badge ${isUpcoming ? 'status-upcoming' : 'status-past'}`}>
                     {isUpcoming ? 'Inscrições abertas' : 'Encerrado'}
                   </span>
-                  {evento.data.international && (
-                    <span class="international-badge">🌎 Internacional</span>
-                  )}
                   {evento.data.officialTechSisters && (
                     <span class="official-badge">✅ Evento Oficial Tech Sisters</span>
+                  )}
+                  {evento.data.officialSouJava && (
+                    <span class="official-badge">✅ Evento Oficial SouJava</span>
+                  )}
+                  {evento.data.international && (
+                    <span class="international-badge">🌎 Internacional</span>
                   )}
                   {evento.data.womenInTech && (
                     <span class="women-badge">👩‍💻 Mulheres em Tech</span>

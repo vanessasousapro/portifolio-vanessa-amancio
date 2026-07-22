@@ -8,6 +8,7 @@ heroImage: '/soujava-meeting-howdy-julho-2026.jpg'
 location: 'Limma Café (dentro da Audi Comark), São Paulo – SP'
 registrationUrl: 'https://lnkd.in/dzWeAwp9'
 international: true
+officialSouJava: true
 ---
 
 <div class="lang-pt">
@@ -38,6 +39,10 @@ Seja você desenvolvedor Java, arquiteto de software, tech lead ou estudante, es
 
 Nos vemos lá! ☕
 
+---
+
+Este evento é oficialmente organizado pela comunidade SouJava. Esta página é destinada apenas à divulgação do evento.☕
+
 </div>
 
 <div class="lang-en">
@@ -67,5 +72,9 @@ Whether you're a Java developer, software architect, tech lead, or student, this
 📺 If you can't make it in person, the meetup will also be live streamed on SouJava's YouTube channel.
 
 See you there! ☕
+
+---
+
+This event is officially organized by the SouJava community. This page is intended solely for event promotion.☕
 
 </div>
