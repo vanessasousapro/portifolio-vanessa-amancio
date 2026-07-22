@@ -32,6 +32,9 @@ const eventos = defineCollection({
 		heroImage: z.string().optional(),
 		location: z.string(),
 		registrationUrl: z.string().optional(),
+		international: z.boolean().optional(),
+		titleEn: z.string().optional(),
+		descriptionEn: z.string().optional(),
 	}),
 });
 

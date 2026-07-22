@@ -46,6 +46,9 @@ today.setHours(0, 0, 0, 0);
                   <span class={`status-badge ${isUpcoming ? 'status-upcoming' : 'status-past'}`}>
                     {isUpcoming ? 'Inscrições abertas' : 'Encerrado'}
                   </span>
+                  {evento.data.international && (
+                    <span class="international-badge">🌎 Internacional</span>
+                  )}
                 </div>
                 <p class="event-title">{evento.data.title}</p>
                 <p class="event-location">📍 {evento.data.location}</p>
@@ -147,6 +150,16 @@ today.setHours(0, 0, 0, 0);
     color: var(--muted);
   }
 
+  .international-badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--border2);
+    color: var(--accent2);
+  }
+
   .event-title {
     font-size: 1.2rem;
     font-weight: 600;
@@ -168,7 +181,11 @@ today.setHours(0, 0, 0, 0);
     font-size: 14px;
     color: var(--muted);
     line-height: 1.7;
-    margin: 0;
+    margin: 0 0 0.35rem;
+  }
+
+  .event-summary:last-child {
+    margin-bottom: 0;
   }
 
   .empty-state {
