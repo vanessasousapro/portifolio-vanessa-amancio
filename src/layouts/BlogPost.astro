@@ -83,7 +83,7 @@ const instagramImageUrl = heroImage ? new URL(heroImage, Astro.url).href : null;
     </svg>
     Instagram
   </a>
-  <a href={discordShare} target="_blank" class="share-btn">
+  <a href={discordShare} target="_blank" class="share-btn" id="discord-share-btn">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="9" cy="12" r="1"/>
     <circle cx="15" cy="12" r="1"/>
@@ -103,7 +103,7 @@ const instagramImageUrl = heroImage ? new URL(heroImage, Astro.url).href : null;
   </body>
 </html>
 
-<script define:vars={{ instagramImageUrl, shareTitle: title, shareText: description }}>
+<script define:vars={{ instagramImageUrl, shareTitle: title, shareText: description, discordShare, pageUrl }}>
   function showShareToast(message) {
     const toast = document.createElement('div');
     toast.className = 'share-toast';
@@ -152,6 +152,21 @@ const instagramImageUrl = heroImage ? new URL(heroImage, Astro.url).href : null;
   }
 
   document.getElementById('instagram-share-btn')?.addEventListener('click', shareToInstagram);
+
+  async function shareToDiscord(event) {
+    event.preventDefault();
+
+    try {
+      await navigator.clipboard.writeText(pageUrl);
+      showShareToast('Link copiado! Cole na conversa do Discord que você escolher. 💬');
+    } catch (err) {
+      showShareToast('Não consegui copiar o link automaticamente — copie a URL da página e cole no Discord. 💬');
+    }
+
+    window.open(discordShare, '_blank');
+  }
+
+  document.getElementById('discord-share-btn')?.addEventListener('click', shareToDiscord);
 </script>
 
 <style is:global>
