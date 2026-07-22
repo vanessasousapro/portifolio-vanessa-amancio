@@ -33,6 +33,8 @@ const eventos = defineCollection({
 		location: z.string(),
 		registrationUrl: z.string().optional(),
 		international: z.boolean().optional(),
+		womenInTech: z.boolean().optional(),
+		officialTechSisters: z.boolean().optional(),
 		titleEn: z.string().optional(),
 		descriptionEn: z.string().optional(),
 	}),
