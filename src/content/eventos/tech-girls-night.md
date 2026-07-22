@@ -4,6 +4,9 @@ description: 'Primeiro evento oficial da Tech Sisters: uma noite de troca, apren
 eventDate: 'Jul 24 2026'
 heroImage: '/tech-girls-night.jpg'
 location: 'Discord da Tech Sisters (com transmissão simultânea no YouTube)'
+registrationUrl: 'https://discord.com/invite/rsq24zQqf'
+womenInTech: true
+officialTechSisters: true
 ---
 
 Meninas, chegou o grande dia! 💖
@@ -19,3 +22,7 @@ Será uma noite de muita troca, aprendizado e conexão, com a participação de 
 Além da transmissão no Discord, também faremos uma live no YouTube. A gravação ficará disponível para quem não conseguir acompanhar ao vivo.
 
 Esperamos vocês para viver esse momento tão especial com a gente! 💋
+
+---
+
+Este evento é oficialmente organizado pela comunidade Tech Sisters. Esta página é destinada apenas à divulgação do evento.❤️
