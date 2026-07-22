@@ -58,7 +58,7 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
         <div class="share">
 		<p class="share-label">Gostou do conteúdo? Compartilhe com a comunidade! 🚀</p>
           <div class="share-buttons">
-  <a href={linkedinShare} target="_blank" class="share-btn">
+  <a href={linkedinShare} target="_blank" class="share-btn" id="linkedin-share-btn">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
       <rect width="4" height="12" x="2" y="9"/>
@@ -147,6 +147,19 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
         showShareToast('Selecione o link e copie com Ctrl+C. 💬');
       });
   });
+
+  // em nova aba (target="_blank"), o celular costuma manter tudo no navegador
+  // em vez de entregar pro app do LinkedIn — navegar na mesma aba é o que faz
+  // o iOS/Android acionarem o universal link e abrirem o app instalado
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const linkedinBtn = document.getElementById('linkedin-share-btn');
+
+  if (isMobile && linkedinBtn) {
+    linkedinBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      window.location.href = linkedinBtn.href;
+    });
+  }
 </script>
 
 <style is:global>
