@@ -30,11 +30,12 @@ const linkedinShare = `https://www.linkedin.com/sharing/share-offsite/?url=${enc
 const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pageUrl)}`;
 const instagramShare = `https://www.instagram.com/`;
 const discordShare = `https://discord.com/channels/@me`;
+const instagramImageUrl = heroImage ? new URL(heroImage, Astro.url).href : null;
 ---
 
 <html lang="pt-BR">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={title} description={description} image={heroImage} />
   </head>
 
   <body>
@@ -74,7 +75,7 @@ const discordShare = `https://discord.com/channels/@me`;
     </svg>
     WhatsApp
   </a>
-  <a href={instagramShare} target="_blank" class="share-btn">
+  <a href={instagramShare} target="_blank" class="share-btn" id="instagram-share-btn">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
@@ -101,6 +102,83 @@ const discordShare = `https://discord.com/channels/@me`;
     <Footer />
   </body>
 </html>
+
+<script define:vars={{ instagramImageUrl, shareTitle: title, shareText: description }}>
+  function showShareToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'share-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('visible'));
+    setTimeout(() => {
+      toast.classList.remove('visible');
+      setTimeout(() => toast.remove(), 300);
+    }, 4500);
+  }
+
+  async function shareToInstagram(event) {
+    if (!instagramImageUrl) return;
+    event.preventDefault();
+
+    let file = null;
+    try {
+      const response = await fetch(instagramImageUrl);
+      const blob = await response.blob();
+      file = new File([blob], 'artigo.png', { type: blob.type || 'image/png' });
+    } catch (err) {
+      file = null;
+    }
+
+    const canUseWebShare = file && navigator.canShare && navigator.canShare({ files: [file] });
+
+    if (canUseWebShare) {
+      try {
+        await navigator.share({ files: [file], title: shareTitle, text: shareText });
+      } catch (err) {
+        // usuário cancelou o compartilhamento nativo — não faz fallback
+      }
+      return;
+    }
+
+    const link = document.createElement('a');
+    link.href = instagramImageUrl;
+    link.download = 'imagem-artigo.png';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    window.open('https://www.instagram.com/', '_blank');
+    showShareToast('Imagem baixada! Abra os Stories no Instagram e selecione essa imagem na galeria. 📸');
+  }
+
+  document.getElementById('instagram-share-btn')?.addEventListener('click', shareToInstagram);
+</script>
+
+<style is:global>
+  .share-toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translate(-50%, 1rem);
+    background: var(--text);
+    color: var(--bg);
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-size: 13px;
+    max-width: min(90vw, 360px);
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  .share-toast.visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+</style>
 
 <style>
   .back-link {
