@@ -16,9 +16,14 @@ const {
   heroImage,
   location,
   registrationUrl,
+  international,
+  titleEn,
+  descriptionEn,
   backHref,
   backLabel,
 } = Astro.props;
+
+const hasTranslation = Boolean(international && (titleEn || descriptionEn));
 
 const formattedDate = new Date(eventDate).toLocaleDateString('pt-BR', {
   day: '2-digit',
@@ -55,9 +60,36 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
             <span class={`status-badge ${isUpcoming ? 'status-upcoming' : 'status-past'}`}>
               {statusLabel}
             </span>
+            {international && (
+              <span class="international-badge">🌎 Internacional</span>
+            )}
+            {hasTranslation && (
+              <button type="button" class="lang-toggle" id="lang-toggle-btn">
+                🇧🇷 Ler em português
+              </button>
+            )}
           </div>
-          <h1>{title}</h1>
+          <h1>
+            {titleEn ? (
+              <>
+                <span data-lang-pt style="display: none;">{title}</span>
+                <span data-lang-en>{titleEn}</span>
+              </>
+            ) : (
+              <span data-lang-pt>{title}</span>
+            )}
+          </h1>
           <p class="post-location">📍 {location}</p>
+          <p class="post-description">
+            {descriptionEn ? (
+              <>
+                <span data-lang-pt style="display: none;">{description}</span>
+                <span data-lang-en>{descriptionEn}</span>
+              </>
+            ) : (
+              <span data-lang-pt>{description}</span>
+            )}
+          </p>
         </div>
 
         {heroImage && (
@@ -189,6 +221,37 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
       }, 1500);
     });
   }
+
+  const langToggleBtn = document.getElementById('lang-toggle-btn');
+  let currentLang = 'en';
+
+  function applyLang(lang) {
+    currentLang = lang;
+
+    // spans do título/descrição no cabeçalho (inline)
+    document.querySelectorAll('[data-lang-pt]').forEach((el) => {
+      el.style.display = lang === 'pt' ? 'inline' : 'none';
+    });
+    document.querySelectorAll('[data-lang-en]').forEach((el) => {
+      el.style.display = lang === 'en' ? 'inline' : 'none';
+    });
+
+    // divs do corpo do conteúdo em markdown (block)
+    document.querySelectorAll('.prose .lang-pt').forEach((el) => {
+      el.style.display = lang === 'pt' ? 'block' : 'none';
+    });
+    document.querySelectorAll('.prose .lang-en').forEach((el) => {
+      el.style.display = lang === 'en' ? 'block' : 'none';
+    });
+
+    if (langToggleBtn) {
+      langToggleBtn.textContent = lang === 'pt' ? '🇺🇸 Read in English' : '🇧🇷 Ler em português';
+    }
+  }
+
+  langToggleBtn?.addEventListener('click', () => {
+    applyLang(currentLang === 'pt' ? 'en' : 'pt');
+  });
 </script>
 
 <style is:global>
@@ -304,6 +367,13 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
   .modal-copy-btn:hover {
     opacity: 0.85;
   }
+
+  /* conteúdo em português vindo do corpo em markdown (divs .lang-pt/.lang-en) —
+     fica escondido por padrão (inglês é o idioma inicial); o botão de
+     alternância troca via JS */
+  .prose .lang-pt {
+    display: none;
+  }
 </style>
 
 <style>
@@ -359,6 +429,35 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
     color: var(--muted);
   }
 
+  .international-badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--border2);
+    color: var(--accent2);
+  }
+
+  .lang-toggle {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--border2);
+    background: none;
+    color: var(--accent2);
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .lang-toggle:hover {
+    color: var(--text);
+    border-color: var(--text);
+  }
+
   .post-header h1 {
     font-size: 1.75rem;
     line-height: 1.3;
@@ -370,6 +469,13 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
   .post-location {
     font-size: 13px;
     color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .post-description {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
   }
 
   .hero-image {
