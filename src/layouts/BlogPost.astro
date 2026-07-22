@@ -28,9 +28,6 @@ const formattedDate = new Date(pubDate).toLocaleDateString('pt-BR', {
 const pageUrl = Astro.url.href;
 const linkedinShare = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
 const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pageUrl)}`;
-const instagramShare = `https://www.instagram.com/`;
-const discordShare = `https://discord.com/channels/@me`;
-const instagramImageUrl = heroImage ? new URL(heroImage, Astro.url).href : null;
 ---
 
 <html lang="pt-BR">
@@ -75,15 +72,7 @@ const instagramImageUrl = heroImage ? new URL(heroImage, Astro.url).href : null;
     </svg>
     WhatsApp
   </a>
-  <a href={instagramShare} target="_blank" class="share-btn" id="instagram-share-btn">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-    </svg>
-    Instagram
-  </a>
-  <a href={discordShare} target="_blank" class="share-btn" id="discord-share-btn">
+  <button type="button" class="share-btn" id="discord-share-btn">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="9" cy="12" r="1"/>
     <circle cx="15" cy="12" r="1"/>
@@ -93,17 +82,29 @@ const instagramImageUrl = heroImage ? new URL(heroImage, Astro.url).href : null;
     <path d="M8.5 17.5l-1 2.5s-4-1.5-4-5.5c0-4 3.5-7.5 3.5-7.5L8.5 8"/>
   </svg>
   Discord
-</a>
+</button>
 </div>
         </div>
 
       </article>
     </main>
     <Footer />
+
+    <div class="modal-overlay" id="discord-modal-overlay">
+      <div class="modal-card">
+        <button type="button" class="modal-close" id="discord-modal-close" aria-label="Fechar">✕</button>
+        <p class="modal-title">Compartilhar no Discord</p>
+        <p class="modal-text">Copie o link abaixo e cole na conversa que você quiser 💬</p>
+        <div class="modal-link-row">
+          <input type="text" class="modal-link-input" id="discord-modal-link" value={pageUrl} readonly />
+          <button type="button" class="modal-copy-btn" id="discord-modal-copy">Copiar</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 
-<script define:vars={{ instagramImageUrl, shareTitle: title, shareText: description, discordShare, pageUrl }}>
+<script define:vars={{ pageUrl }}>
   function showShareToast(message) {
     const toast = document.createElement('div');
     toast.className = 'share-toast';
@@ -116,57 +117,36 @@ const instagramImageUrl = heroImage ? new URL(heroImage, Astro.url).href : null;
     }, 4500);
   }
 
-  async function shareToInstagram(event) {
-    if (!instagramImageUrl) return;
+  const discordOverlay = document.getElementById('discord-modal-overlay');
+  const discordLinkInput = document.getElementById('discord-modal-link');
+
+  function openDiscordModal(event) {
     event.preventDefault();
-
-    let file = null;
-    try {
-      const response = await fetch(instagramImageUrl);
-      const blob = await response.blob();
-      file = new File([blob], 'artigo.png', { type: blob.type || 'image/png' });
-    } catch (err) {
-      file = null;
-    }
-
-    const canUseWebShare = file && navigator.canShare && navigator.canShare({ files: [file] });
-
-    if (canUseWebShare) {
-      try {
-        await navigator.share({ files: [file], title: shareTitle, text: shareText });
-      } catch (err) {
-        // usuário cancelou o compartilhamento nativo — não faz fallback
-      }
-      return;
-    }
-
-    const link = document.createElement('a');
-    link.href = instagramImageUrl;
-    link.download = 'imagem-artigo.png';
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-
-    window.open('https://www.instagram.com/', '_blank');
-    showShareToast('Imagem baixada! Abra os Stories no Instagram e selecione essa imagem na galeria. 📸');
+    discordOverlay?.classList.add('visible');
   }
 
-  document.getElementById('instagram-share-btn')?.addEventListener('click', shareToInstagram);
-
-  async function shareToDiscord(event) {
-    event.preventDefault();
-
-    try {
-      await navigator.clipboard.writeText(pageUrl);
-      showShareToast('Link copiado! Cole na conversa do Discord que você escolher. 💬');
-    } catch (err) {
-      showShareToast('Não consegui copiar o link automaticamente — copie a URL da página e cole no Discord. 💬');
-    }
-
-    window.open(discordShare, '_blank');
+  function closeDiscordModal() {
+    discordOverlay?.classList.remove('visible');
   }
 
-  document.getElementById('discord-share-btn')?.addEventListener('click', shareToDiscord);
+  document.getElementById('discord-share-btn')?.addEventListener('click', openDiscordModal);
+  document.getElementById('discord-modal-close')?.addEventListener('click', closeDiscordModal);
+  discordOverlay?.addEventListener('click', (event) => {
+    if (event.target === discordOverlay) closeDiscordModal();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeDiscordModal();
+  });
+
+  document.getElementById('discord-modal-copy')?.addEventListener('click', () => {
+    navigator.clipboard
+      .writeText(pageUrl)
+      .then(() => showShareToast('Link copiado! Cole na conversa do Discord que você escolher. 💬'))
+      .catch(() => {
+        discordLinkInput?.select();
+        showShareToast('Selecione o link e copie com Ctrl+C. 💬');
+      });
+  });
 </script>
 
 <style is:global>
@@ -192,6 +172,95 @@ const instagramImageUrl = heroImage ? new URL(heroImage, Astro.url).href : null;
   .share-toast.visible {
     opacity: 1;
     transform: translate(-50%, 0);
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+    padding: 1rem;
+  }
+
+  .modal-overlay.visible {
+    display: flex;
+  }
+
+  .modal-card {
+    position: relative;
+    background: var(--surface, #17171a);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .modal-close:hover {
+    color: var(--text);
+  }
+
+  .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-text {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .modal-link-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .modal-link-input {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2, #1e1e22);
+    color: var(--text);
+  }
+
+  .modal-copy-btn {
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .modal-copy-btn:hover {
+    opacity: 0.85;
   }
 </style>
 
@@ -270,11 +339,14 @@ const instagramImageUrl = heroImage ? new URL(heroImage, Astro.url).href : null;
     align-items: center;
     gap: 0.5rem;
     font-size: 13px;
+    font-family: inherit;
     padding: 0.4rem 0.9rem;
     border-radius: 6px;
     text-decoration: none;
+    background: none;
     border: 1px solid var(--border);
     color: var(--muted);
+    cursor: pointer;
     transition: all 0.2s;
   }
 

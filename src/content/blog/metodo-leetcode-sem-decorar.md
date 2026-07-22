@@ -2,7 +2,7 @@
 title: 'Pare de decorar soluções no LeetCode: aprenda a pensar como um desenvolvedor'
 description: 'O método que uso para estudar LeetCode com foco em lógica e reconhecimento de padrões, em vez de decorar soluções prontas.'
 pubDate: 'Jul 22 2026'
-heroImage: '/metodo-leetcode-sem-decorar.png'
+heroImage: '/metodo-leetcode-sem-decorar.jpg'
 ---
 
 Quem está se preparando para entrevistas técnicas provavelmente já ouviu a frase: **"faça muito LeetCode"**. O problema é que muita gente interpreta isso da forma errada e acaba tentando decorar centenas de soluções.
