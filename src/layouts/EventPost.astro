@@ -30,6 +30,11 @@ const today = new Date();
 today.setHours(0, 0, 0, 0);
 const isUpcoming = new Date(eventDate).getTime() >= today.getTime();
 const statusLabel = isUpcoming ? 'Inscrições abertas' : 'Encerrado';
+
+const pageUrl = Astro.url.href;
+const linkedinShare = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
+const linkedinDeepLink = `linkedin://shareArticle?mini=true&url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(description)}`;
+const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pageUrl)}`;
 ---
 
 <html lang="pt-BR">
@@ -69,11 +74,237 @@ const statusLabel = isUpcoming ? 'Inscrições abertas' : 'Encerrado';
           <slot />
         </div>
 
+        <div class="share">
+		<p class="share-label">Gostou do conteúdo? Compartilhe com a comunidade! 🚀</p>
+          <div class="share-buttons">
+  <a href={linkedinShare} target="_blank" class="share-btn" id="linkedin-share-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+      <rect width="4" height="12" x="2" y="9"/>
+      <circle cx="4" cy="4" r="2"/>
+    </svg>
+    LinkedIn
+  </a>
+  <a href={whatsappShare} target="_blank" class="share-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+    </svg>
+    WhatsApp
+  </a>
+  <button type="button" class="share-btn" id="discord-share-btn">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="12" r="1"/>
+    <circle cx="15" cy="12" r="1"/>
+    <path d="M7.5 7.2A18.8 18.8 0 0 1 12 6.5a18.8 18.8 0 0 1 4.5.7"/>
+    <path d="M7.5 16.8A18.8 18.8 0 0 0 12 17.5a18.8 18.8 0 0 0 4.5-.7"/>
+    <path d="M15.5 17.5l1 2.5s4-1.5 4-5.5c0-4-3.5-7.5-3.5-7.5L15.5 8"/>
+    <path d="M8.5 17.5l-1 2.5s-4-1.5-4-5.5c0-4 3.5-7.5 3.5-7.5L8.5 8"/>
+  </svg>
+  Discord
+</button>
+</div>
+        </div>
+
       </article>
     </main>
     <Footer />
+
+    <div class="modal-overlay" id="discord-modal-overlay">
+      <div class="modal-card">
+        <button type="button" class="modal-close" id="discord-modal-close" aria-label="Fechar">✕</button>
+        <p class="modal-title">Compartilhar no Discord</p>
+        <p class="modal-text">Copie o link abaixo e cole na conversa que você quiser 💬</p>
+        <div class="modal-link-row">
+          <input type="text" class="modal-link-input" id="discord-modal-link" value={pageUrl} readonly />
+          <button type="button" class="modal-copy-btn" id="discord-modal-copy">Copiar</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
+
+<script define:vars={{ pageUrl, linkedinDeepLink }}>
+  function showShareToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'share-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('visible'));
+    setTimeout(() => {
+      toast.classList.remove('visible');
+      setTimeout(() => toast.remove(), 300);
+    }, 4500);
+  }
+
+  const discordOverlay = document.getElementById('discord-modal-overlay');
+  const discordLinkInput = document.getElementById('discord-modal-link');
+
+  function openDiscordModal(event) {
+    event.preventDefault();
+    discordOverlay?.classList.add('visible');
+  }
+
+  function closeDiscordModal() {
+    discordOverlay?.classList.remove('visible');
+  }
+
+  document.getElementById('discord-share-btn')?.addEventListener('click', openDiscordModal);
+  document.getElementById('discord-modal-close')?.addEventListener('click', closeDiscordModal);
+  discordOverlay?.addEventListener('click', (event) => {
+    if (event.target === discordOverlay) closeDiscordModal();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeDiscordModal();
+  });
+
+  document.getElementById('discord-modal-copy')?.addEventListener('click', () => {
+    navigator.clipboard
+      .writeText(pageUrl)
+      .then(() => showShareToast('Link copiado! Cole na conversa do Discord que você escolher. 💬'))
+      .catch(() => {
+        discordLinkInput?.select();
+        showShareToast('Selecione o link e copie com Ctrl+C. 💬');
+      });
+  });
+
+  // a URL de share-offsite do LinkedIn não é um universal link (diferente do
+  // wa.me do WhatsApp), então o navegador mobile não entrega pro app sozinho.
+  // tenta o esquema legado linkedin://, e se o app não abrir em ~1,5s
+  // (esquema não suportado ou app não instalado), cai pro link normal
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const linkedinBtn = document.getElementById('linkedin-share-btn');
+
+  if (isMobile && linkedinBtn) {
+    linkedinBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      const webFallbackUrl = linkedinBtn.href;
+      const clickedAt = Date.now();
+
+      window.location.href = linkedinDeepLink;
+
+      setTimeout(() => {
+        if (!document.hidden && Date.now() - clickedAt < 2000) {
+          window.location.href = webFallbackUrl;
+        }
+      }, 1500);
+    });
+  }
+</script>
+
+<style is:global>
+  .share-toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translate(-50%, 1rem);
+    background: var(--text);
+    color: var(--bg);
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-size: 13px;
+    max-width: min(90vw, 360px);
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  .share-toast.visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+    padding: 1rem;
+  }
+
+  .modal-overlay.visible {
+    display: flex;
+  }
+
+  .modal-card {
+    position: relative;
+    background: var(--surface, #17171a);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .modal-close:hover {
+    color: var(--text);
+  }
+
+  .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-text {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .modal-link-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .modal-link-input {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2, #1e1e22);
+    color: var(--text);
+  }
+
+  .modal-copy-btn {
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .modal-copy-btn:hover {
+    opacity: 0.85;
+  }
+</style>
 
 <style>
   .back-link {
@@ -174,5 +405,46 @@ const statusLabel = isUpcoming ? 'Inscrições abertas' : 'Encerrado';
     font-size: 16px;
     line-height: 1.85;
     margin-bottom: 3rem;
+  }
+
+  .share {
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+	text-align: center;
+  }
+
+  .share-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .share-buttons {
+    display: flex;
+    gap: 0.75rem;
+	justify-content: center;
+  }
+
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 13px;
+    font-family: inherit;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    text-decoration: none;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .share-btn:hover {
+    color: var(--text);
+    border-color: var(--border2);
   }
 </style>
