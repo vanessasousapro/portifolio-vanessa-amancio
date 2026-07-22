@@ -1,0 +1,21 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import EventPost from '../../layouts/EventPost.astro';
+
+export async function getStaticPaths() {
+  const eventos = await getCollection('eventos');
+  return eventos.map((evento) => ({
+    params: { slug: evento.id },
+    props: evento,
+  }));
+}
+
+type Props = CollectionEntry<'eventos'>;
+
+const evento = Astro.props;
+const { Content } = await render(evento);
+---
+
+<EventPost {...evento.data} backHref="/eventos" backLabel="← voltar aos eventos">
+  <Content />
+</EventPost>

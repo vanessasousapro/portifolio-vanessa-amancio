@@ -30,11 +30,11 @@ O **vanessaamancio.com** é meu portfólio pessoal e blog, desenvolvido com Astr
 - [x] Página inicial com último post publicado
 - [x] Página sobre mim com informações profissionais
 - [x] Blog com posts em Markdown
-- [x] Botões de compartilhamento (LinkedIn, WhatsApp, Instagram, Discord)
+- [x] Botões de compartilhamento (LinkedIn, WhatsApp, Discord)
 - [x] Design responsivo e tema escuro
 - [x] Deploy automático via Vercel
+- [x] Página de eventos com data e status de inscrição
 - [ ] Página de projetos com repositórios do GitHub
-- [ ] Página de comunidade e eventos
 
 ---
 
@@ -61,13 +61,15 @@ portfolio-vanessa-amancio/
 │   ├── components/         # Header, Footer, BaseHead
 │   ├── content/
 │   │   ├── posts/          # Posts estilo LinkedIn (eventos, comunidade) em Markdown (.md)
-│   │   └── blog/           # Artigos sobre métodos de estudo em Markdown (.md)
-│   ├── layouts/            # Layout base dos posts/artigos
+│   │   ├── blog/           # Artigos sobre métodos de estudo em Markdown (.md)
+│   │   └── eventos/        # Eventos com data, local e status de inscrição em Markdown (.md)
+│   ├── layouts/            # Layout base dos posts/artigos/eventos
 │   ├── pages/              # Páginas do site
 │   │   ├── index.astro     # Página inicial
 │   │   ├── about.astro     # Sobre mim
 │   │   ├── posts/          # Listagem e posts estilo LinkedIn
-│   │   └── blog/           # Listagem e artigos de métodos de estudo
+│   │   ├── blog/           # Listagem e artigos de métodos de estudo
+│   │   └── eventos/        # Listagem e detalhe de eventos
 │   └── styles/
 │       └── global.css      # Estilos globais
 ├── astro.config.mjs
@@ -94,6 +96,30 @@ Conteúdo do post aqui...
 
 3. Copie a imagem de capa para a pasta `public/`
 4. Faça o commit e push — a Vercel publica automaticamente!
+
+---
+
+## 📅 Como adicionar um novo evento
+
+1. Crie um arquivo `.md` em `src/content/eventos/`
+2. Adicione o frontmatter com as informações do evento:
+
+```markdown
+---
+title: 'Nome do evento'
+description: 'Resumo curto'
+eventDate: 'Aug 15 2026'
+heroImage: '/nome-da-imagem.png'
+location: 'São Paulo, SP · Presencial'
+registrationUrl: 'https://link-de-inscricao.com'
+---
+
+Detalhes do evento aqui...
+```
+
+3. O status ("Inscrições abertas" ou "Encerrado") é calculado automaticamente comparando `eventDate` com a data de hoje — não precisa atualizar manualmente
+4. `registrationUrl` é opcional e só aparece como botão enquanto o evento ainda não aconteceu
+5. Copie a imagem de capa para a pasta `public/`, faça o commit e push
 
 ---
 
