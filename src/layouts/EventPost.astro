@@ -426,8 +426,9 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
 
   .meta-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.6rem 0.75rem;
     margin-bottom: 0.5rem;
   }
 
@@ -435,6 +436,7 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
     font-size: 12px;
     color: var(--muted);
     letter-spacing: 0.02em;
+    white-space: nowrap;
   }
 
   .status-badge {
@@ -445,6 +447,7 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
     padding: 0.2rem 0.6rem;
     border-radius: 999px;
     border: 1px solid var(--border2);
+    white-space: nowrap;
   }
 
   .status-upcoming {
@@ -465,6 +468,7 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
     border-radius: 999px;
     border: 1px solid var(--border2);
     color: var(--accent2);
+    white-space: nowrap;
   }
 
   .women-badge {
@@ -476,6 +480,7 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
     border: 1px solid rgba(236, 72, 153, 0.4);
     background: rgba(236, 72, 153, 0.1);
     color: #ec4899;
+    white-space: nowrap;
   }
 
   .official-badge {
@@ -487,6 +492,7 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
     border: 1px solid rgba(74, 222, 128, 0.4);
     background: rgba(74, 222, 128, 0.1);
     color: #4ade80;
+    white-space: nowrap;
   }
 
   .topic-badge {
@@ -498,6 +504,7 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
     border: 1px solid rgba(245, 158, 11, 0.4);
     background: rgba(245, 158, 11, 0.1);
     color: #f59e0b;
+    white-space: nowrap;
   }
 
   .lang-toggle {
@@ -512,6 +519,7 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
     font-family: inherit;
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap;
   }
 
   .lang-toggle:hover {
@@ -613,5 +621,27 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
   .share-btn:hover {
     color: var(--text);
     border-color: var(--border2);
+  }
+
+  @media (max-width: 480px) {
+    .meta-row {
+      gap: 0.35rem;
+    }
+
+    .post-date {
+      flex-basis: 100%;
+      font-size: 10px;
+    }
+
+    .status-badge,
+    .international-badge,
+    .women-badge,
+    .official-badge,
+    .topic-badge,
+    .lang-toggle {
+      font-size: 8px;
+      letter-spacing: 0.01em;
+      padding: 0.15rem 0.4rem;
+    }
   }
 </style>
