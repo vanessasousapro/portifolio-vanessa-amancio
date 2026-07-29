@@ -14,10 +14,16 @@ import { SITE_TITLE, SOCIAL_LINKS } from '../consts';
     <Header />
     <main>
 
-      <div class="tag">disponível para oportunidades de trabalho</div>
+      <div class="intro">
+        <img class="profile-photo" src="/foto-perfil-vanessa.png" alt="Vanessa Amancio" />
 
-      <h1>Vanessa Amancio</h1>
-      <p class="headline">Software Developer · Back-End · Java</p>
+        <div class="intro-text">
+          <div class="tag">disponível para oportunidades de trabalho</div>
+
+          <h1>Vanessa Amancio</h1>
+          <p class="headline">Software Developer · Back-End · Java</p>
+        </div>
+      </div>
 
       <hr />
 
@@ -97,8 +103,42 @@ import { SITE_TITLE, SOCIAL_LINKS } from '../consts';
   .headline {
     font-size: 13px;
     color: var(--muted);
-    margin-bottom: 2rem;
     letter-spacing: 0.02em;
+  }
+
+  .intro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .intro-text {
+    flex: 1;
+  }
+
+  .profile-photo {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 480px) {
+    .intro {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+
+    .profile-photo {
+      width: 130px;
+      height: 130px;
+      align-self: center;
+    }
   }
 
   .community-card {

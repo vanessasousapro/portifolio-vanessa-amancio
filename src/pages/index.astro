@@ -7,6 +7,14 @@ import { getCollection } from 'astro:content';
 
 const posts = await getCollection('posts');
 const latestPost = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())[0];
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+const eventos = await getCollection('eventos');
+const nextEvent = eventos
+  .filter((evento) => evento.data.eventDate.getTime() >= today.getTime())
+  .sort((a, b) => a.data.eventDate.valueOf() - b.data.eventDate.valueOf())[0];
 ---
 
 <!doctype html>
@@ -19,29 +27,51 @@ const latestPost = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDat
     <main>
 
       <div class="welcome">
-        <h1>Boas-vindas ao meu blog! 👋</h1>
+        <h1>Boas-vindas ao meu portifólio 👋</h1>
         <p>Olá, sou Vanessa Amancio, engenheira de software backend. Aqui compartilho minha evolução na programação, estudos, projetos, e comunidade tech. 💻</p>
       </div>
 
       <hr />
 
-      <section class="latest-post">
-        <h2>post recente</h2>
-        <a href={`/posts/${latestPost.id}`} class="post-card">
-          {latestPost.data.heroImage && (
-            <img
-              class="post-cover"
-              src={latestPost.data.heroImage}
-              alt={latestPost.data.title}
-            />
-          )}
-          <p class="post-date">
-            {new Date(latestPost.data.pubDate).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
-          </p>
-          <p class="post-title">{latestPost.data.title}</p>
-          <p class="post-summary">{latestPost.data.description}</p>
-        </a>
-      </section>
+      <div class="highlights">
+        <section class="latest-post">
+          <h2>post recente</h2>
+          <a href={`/posts/${latestPost.id}`} class="post-card">
+            {latestPost.data.heroImage && (
+              <img
+                class="post-cover"
+                src={latestPost.data.heroImage}
+                alt={latestPost.data.title}
+              />
+            )}
+            <p class="post-date">
+              {new Date(latestPost.data.pubDate).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+            </p>
+            <p class="post-title">{latestPost.data.title}</p>
+            <p class="post-summary">{latestPost.data.description}</p>
+          </a>
+        </section>
+
+        {nextEvent && (
+          <section class="next-event">
+            <h2>próximo evento</h2>
+            <a href={`/eventos/${nextEvent.id}`} class="post-card">
+              {nextEvent.data.heroImage && (
+                <img
+                  class="post-cover"
+                  src={nextEvent.data.heroImage}
+                  alt={nextEvent.data.title}
+                />
+              )}
+              <p class="post-date">
+                {nextEvent.data.eventDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+              </p>
+              <p class="post-title">{nextEvent.data.title}</p>
+              <p class="post-summary">📍 {nextEvent.data.location}</p>
+            </a>
+          </section>
+        )}
+      </div>
 
     </main>
     <Footer />
@@ -68,7 +98,10 @@ const latestPost = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDat
     margin: 0;
   }
 
-  .latest-post {
+  .highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
     margin-top: 2.5rem;
   }
 
