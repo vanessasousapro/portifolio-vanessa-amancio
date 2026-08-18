@@ -64,7 +64,10 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
         <div class="post-header">
           <div class="meta-row">
             <p class="post-date">{formattedDate}</p>
-            <span class={`status-badge ${isUpcoming ? 'status-upcoming' : 'status-past'}`}>
+            <span
+              class={`status-badge ${isUpcoming ? 'status-upcoming' : 'status-past'}`}
+              data-event-date={new Date(eventDate).toISOString()}
+            >
               {statusLabel}
             </span>
             {officialTechSisters && (
@@ -124,8 +127,14 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
           <img class="hero-image" src={heroImage} alt={title} />
         )}
 
-        {isUpcoming && registrationUrl && (
-          <a href={registrationUrl} target="_blank" class="registration-btn">
+        {registrationUrl && (
+          <a
+            href={registrationUrl}
+            target="_blank"
+            class="registration-btn"
+            data-event-date={new Date(eventDate).toISOString()}
+            style={isUpcoming ? undefined : 'display: none;'}
+          >
             Quero participar
           </a>
         )}
@@ -184,6 +193,31 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
 </html>
 
 <script define:vars={{ pageUrl, linkedinDeepLink }}>
+  // o site é estático (build-time), então o status calculado no server pode
+  // ficar desatualizado entre deploys — recalcula com a data real do visitante
+  function updateEventStatus() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const badge = document.querySelector('.status-badge[data-event-date]');
+    if (badge) {
+      const eventDate = new Date(badge.getAttribute('data-event-date'));
+      const isUpcoming = eventDate.getTime() >= today.getTime();
+      badge.classList.toggle('status-upcoming', isUpcoming);
+      badge.classList.toggle('status-past', !isUpcoming);
+      badge.textContent = isUpcoming ? 'Inscrições abertas' : 'Encerrado';
+    }
+
+    const registrationBtn = document.querySelector('.registration-btn[data-event-date]');
+    if (registrationBtn) {
+      const eventDate = new Date(registrationBtn.getAttribute('data-event-date'));
+      const isUpcoming = eventDate.getTime() >= today.getTime();
+      registrationBtn.style.display = isUpcoming ? '' : 'none';
+    }
+  }
+
+  updateEventStatus();
+
   function showShareToast(message) {
     const toast = document.createElement('div');
     toast.className = 'share-toast';
