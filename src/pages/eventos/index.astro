@@ -43,7 +43,10 @@ today.setHours(0, 0, 0, 0);
                   <p class="event-date">
                     {evento.data.eventDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
                   </p>
-                  <span class={`status-badge ${isUpcoming ? 'status-upcoming' : 'status-past'}`}>
+                  <span
+                    class={`status-badge ${isUpcoming ? 'status-upcoming' : 'status-past'}`}
+                    data-event-date={evento.data.eventDate.toISOString()}
+                  >
                     {isUpcoming ? 'Inscrições abertas' : 'Encerrado'}
                   </span>
                   {evento.data.officialTechSisters && (
@@ -86,6 +89,25 @@ today.setHours(0, 0, 0, 0);
     <Footer />
   </body>
 </html>
+
+<script>
+  // o site é estático (build-time), então o status calculado no server pode
+  // ficar desatualizado entre deploys — recalcula com a data real do visitante
+  function updateEventStatuses() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    document.querySelectorAll('.status-badge[data-event-date]').forEach((badge) => {
+      const eventDate = new Date(badge.getAttribute('data-event-date'));
+      const isUpcoming = eventDate.getTime() >= today.getTime();
+      badge.classList.toggle('status-upcoming', isUpcoming);
+      badge.classList.toggle('status-past', !isUpcoming);
+      badge.textContent = isUpcoming ? 'Inscrições abertas' : 'Encerrado';
+    });
+  }
+
+  updateEventStatuses();
+</script>
 
 <style>
   .welcome {
