@@ -61,6 +61,9 @@ today.setHours(0, 0, 0, 0);
                   {evento.data.officialCafeEmCodigo && (
                     <span class="official-badge">✅ Evento Oficial Café em Código</span>
                   )}
+                  {evento.data.officialAWS && (
+                    <span class="official-badge">✅ Evento Oficial AWS</span>
+                  )}
                   {evento.data.international && (
                     <span class="international-badge">🌎 Internacional</span>
                   )}
@@ -72,6 +75,9 @@ today.setHours(0, 0, 0, 0);
                   )}
                   {evento.data.devops && (
                     <span class="topic-badge">⚙️ DevOps</span>
+                  )}
+                  {evento.data.cloudAiInnovation && (
+                    <span class="topic-badge">☁️ Cloud, IA & Inovação</span>
                   )}
                 </div>
                 <p class="event-title">{evento.data.title}</p>

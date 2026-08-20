@@ -22,8 +22,10 @@ const {
   officialSouJava,
   officialWoMakersCode,
   officialCafeEmCodigo,
+  officialAWS,
   artificialIntelligence,
   devops,
+  cloudAiInnovation,
   titleEn,
   descriptionEn,
   backHref,
@@ -82,6 +84,9 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
             {officialCafeEmCodigo && (
               <span class="official-badge">✅ Evento Oficial Café em Código</span>
             )}
+            {officialAWS && (
+              <span class="official-badge">✅ Evento Oficial AWS</span>
+            )}
             {international && (
               <span class="international-badge">🌎 Internacional</span>
             )}
@@ -93,6 +98,9 @@ const whatsappShare = `https://wa.me/?text=${encodeURIComponent(title + ' ' + pa
             )}
             {devops && (
               <span class="topic-badge">⚙️ DevOps</span>
+            )}
+            {cloudAiInnovation && (
+              <span class="topic-badge">☁️ Cloud, IA & Inovação</span>
             )}
             {hasTranslation && (
               <button type="button" class="lang-toggle" id="lang-toggle-btn">
